@@ -91,17 +91,15 @@ class UserController extends MainController
         $user = $this->em->getRepository(User::class)->find($id);
         $email = $request->request->get('email');
         $firstName = $request->request->get('firstName');
+        $userName = $request->request->get('username');
         $lastName = $request->request->get('lastName');
-        $phone = $request->request->get('phone');
-        $roles = $request->request->get('roles');
         try {
             $this->update($request, UserType::class, $user, $data);
             $file = $fileUploader->upload($request);
             if ($file != null) {
                 $user->setImage($file['image']);
             }
-
-//                $user->setRoles(array('ROLE_ADMIN','ROLE_USER'));
+                $user->setRoles(array('ROLE_ADMIN','ROLE_USER'));
             if (isset($email)) {
                 $user->setEmail($email);
             }
@@ -111,8 +109,8 @@ class UserController extends MainController
             if (isset($lastName)) {
                 $user->setLastName($lastName);
             }
-            if (isset($phone)) {
-                $user->setPhone($phone);
+            if (isset($userName)) {
+                $user->setUsername($userName);
             }
             $this->em->persist($user);
             $this->em->flush();
